@@ -1,6 +1,6 @@
 import './styles.css';
-import { useState, useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+// import { useState, useEffect } from 'react';
+// import toast, { Toaster } from 'react-hot-toast';
 
 import Timer from './components/Timer/Timer';
 

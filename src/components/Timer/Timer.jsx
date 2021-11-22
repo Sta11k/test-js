@@ -1,27 +1,64 @@
-export default function Timer({ onClick }) {
+import { useState } from 'react';
+import { observable, Observable, timer } from 'rxjs';
+
+// import { of } from 'rxjs';
+// import { map } from 'rxjs/operators';
+
+// import { timer, of,Observable } from 'rxjs';
+// import { concatMapTo } from 'rxjs/operators';
+
+export default function Timer() {
+  const [time, setTime] = useState(0);
+
+  const hendleStartTimer = e => {
+    e.preventDefault();
+    const source = timer(1000);
+    source.subscribe(data => setTime(data));
+    console.log('time', time);
+
+    // source.subscribe(data =>setTime(data));
+    // console.log(time);
+    // timer(due: number | Date, scheduler?: SchedulerLike): Observable<0>;
+  };
+
+  // const targetDate = new Date();
+  //     const nowDate = Date.now();
+  //       const timer = targetDate - nowDate;
+  //       console.log(timer);
+
+  // const timerHour = () => (Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+  // console.log("timerHour",timerHour);
+  //      const timerMin =()=>  (Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+  //  const timerSec =()=> (Math.floor((time % (1000 * 60)) / 1000));
+  const stream$ = new Observable(observer => {});
+  const source = timer(1000);
+  const subcription = stream$.subscribe({
+    next: value => source.subscribe(data => setTime(data)),
+  });
+
+  console.log(subcription);
+
   return (
     <>
-      {' '}
       <ul>
-        <li>HH:</li>
-        <li>MM:</li>
-        <li>SS:</li>
+        {/* <li>HH: { timerHour()}</li>
+        <li>MM:{timerMin() }</li> */}
+        <li>SS:{time}</li>
         {/* <li className={timer__item}>HH:{}</li>
         <li className={timer__item}>MM:</li>
         <li className={timer__item}>SS:</li> */}
-      </ul>{' '}
+      </ul>
       <ul>
-        {' '}
-        {/* <li className={s.button__item}>
-           <button onClick={hendelStartStop}>«Start / Stop»</button>
-         </li> */}{' '}
+        <li>
+          <button onClick={hendleStartTimer}>«Start / Stop»</button>
+        </li>
         {/* <li className={button__item}>
            <button onClick={hendelWait}>«Wait»</button>
          </li>
          <li className={button__item}>
            <button onClick={hendeReset}>«Reset»</button>
-         </li>  */}{' '}
-      </ul>{' '}
+         </li>  */}
+      </ul>
     </>
   );
 }
