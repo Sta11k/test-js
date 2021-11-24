@@ -67,16 +67,16 @@ export default function Timer() {
       <span> {new Date(seconds).toISOString().slice(11, 19)}</span>
       <ul className="button">
         <li className="button__item">
-          <button name="start" onClick={HendlStartTimer}>
-            {/* <button name="start" value={name} onClick={HendlStartTimer}> */}
-            «Start»
-          </button>
-        </li>
-        <li className="button__item">
-          <button name="stop" onClick={HendleStopTimer}>
-            {/* <button name="stop" value={name} onClick={HendleStopTimer}> */}
-            «Stop»
-          </button>
+          {status === 'stop' ? (
+            <button name="start" onClick={HendlStartTimer}>
+              «Start»
+            </button>
+          ) : (
+            <button name="stop" onClick={HendleStopTimer}>
+              «Stop»
+            </button>
+          )}
+          {/* <button name="stop" value={name} onClick={HendleStopTimer}> */}
         </li>
         <li className="button__item">
           <button name="wait" id="timer-1" onClick={HendleWaitTimer}>
