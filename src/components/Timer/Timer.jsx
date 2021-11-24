@@ -5,26 +5,46 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 export default function Timer() {
   const [seconds, setSeconds] = useState(0);
   const [status, setStatus] = useState('stop');
-
-  // const newLocal = [status];
+  const [count, setCount] = useState(0);
+  console.log('STATUS', status);
+  // console.log('count', count);
   useEffect(() => {
     const unsubscribe$ = new Subject();
-    interval(100)
+    interval(1000)
       .pipe(takeUntil(unsubscribe$))
       .subscribe(() => {
         if (status === 'start') {
-          setSeconds(val => val + 1000);
+          setSeconds(() => seconds + 1000);
         }
       });
-    console.log(seconds);
     return () => {
       unsubscribe$.next();
       unsubscribe$.complete();
     };
   }, [seconds, status]);
 
+  useEffect(() => {
+    const count$ = new Observable();
+    timer(300)
+      .pipe(takeUntil(count$))
+      .subscribe(() => {
+        if (count === 2) {
+          setStatus('wait');
+        } else {
+          setCount(0);
+        }
+        return () => {
+          debounceTime(300);
+          count$.next();
+
+          count$.complete(setStatus('stop'));
+        };
+      });
+  }, [count, status]);
+
   const HendlStartTimer = e => {
     e.preventDefault();
+
     setStatus('start');
   };
 
@@ -39,10 +59,9 @@ export default function Timer() {
   };
 
   const HendleWaitTimer = e => {
-    setStatus('wait');
+    setCount(() => count + 1);
   };
 
-  console.log('object', seconds);
   return (
     <div className="container">
       <span> {new Date(seconds).toISOString().slice(11, 19)}</span>
@@ -50,7 +69,7 @@ export default function Timer() {
         <li className="button__item">
           <button name="start" onClick={HendlStartTimer}>
             {/* <button name="start" value={name} onClick={HendlStartTimer}> */}
-            «Start / Stop»
+            «Start»
           </button>
         </li>
         <li className="button__item">
@@ -60,7 +79,7 @@ export default function Timer() {
           </button>
         </li>
         <li className="button__item">
-          <button name="wait" onClick={HendleWaitTimer}>
+          <button name="wait" id="timer-1" onClick={HendleWaitTimer}>
             {/* <button name="wait" value={name} onClick={HendleWaitTimer}> */}
             «Wait»
           </button>
