@@ -6,8 +6,8 @@ export default function Timer() {
   const [seconds, setSeconds] = useState(0);
   const [status, setStatus] = useState('stop');
   const [count, setCount] = useState(0);
-  console.log('STATUS', status);
-  // console.log('count', count);
+  const name = '';
+
   useEffect(() => {
     const unsubscribe$ = new Subject();
     interval(1000)
@@ -42,33 +42,70 @@ export default function Timer() {
       });
   }, [count, status]);
 
-  const HendlStartTimer = e => {
-    e.preventDefault();
+  const HendleClick = e => {
+    const { name } = e.target;
+    switch (name) {
+      case 'start':
+        setStatus('start');
+        break;
 
-    setStatus('start');
+      case 'stop':
+        setStatus('stop');
+        setSeconds(0);
+        break;
+
+      case 'wait':
+        setCount(() => count + 1);
+        break;
+
+      case 'reset':
+        setSeconds(0);
+        setStatus('start');
+
+        break;
+      default:
+        return;
+    }
   };
 
-  const HendleStopTimer = e => {
-    setStatus('stop');
-    setSeconds(0);
-  };
+  // const HendleStartTimer = e => {
+  //   e.preventDefault();
 
-  const HendleResetTimer = e => {
-    setSeconds(0);
-    setStatus('start');
-  };
+  //   setStatus('start');
+  // };
 
-  const HendleWaitTimer = e => {
-    setCount(() => count + 1);
-  };
+  // const HendleStopTimer = e => {
+  //   setStatus('stop');
+  //   setSeconds(0);
+  // };
+
+  // const HendleResetTimer = e => {
+  //   setSeconds(0);
+  //   setStatus('start');
+  // };
+
+  // const HendleWaitTimer = e => {
+  //   setCount(() => count + 1);
+  // };
 
   return (
     <div className="container">
       <span> {new Date(seconds).toISOString().slice(11, 19)}</span>
       <ul className="button">
         <li className="button__item">
+          <button name="start" value={name} onClick={HendleClick}>
+            «Start»
+          </button>
+        </li>
+        <li className="button__item">
+          <button name="stop" value={name} onClick={HendleClick}>
+            «Stop»
+          </button>
+        </li>
+
+        {/* <li className="button__item">
           {status === 'stop' ? (
-            <button name="start" onClick={HendlStartTimer}>
+            <button name="start" onClick={HendleStartTimer}>
               «Start»
             </button>
           ) : (
@@ -76,17 +113,15 @@ export default function Timer() {
               «Stop»
             </button>
           )}
-          {/* <button name="stop" value={name} onClick={HendleStopTimer}> */}
-        </li>
+        
+        </li> */}
         <li className="button__item">
-          <button name="wait" id="timer-1" onClick={HendleWaitTimer}>
-            {/* <button name="wait" value={name} onClick={HendleWaitTimer}> */}
+          <button name="wait" value={name} onClick={HendleClick}>
             «Wait»
           </button>
         </li>
         <li className="button__item">
-          <button name="reset" onClick={HendleResetTimer}>
-            {/* <button name="reset" value={name} onClick={HendleResetTimer}> */}
+          <button name="reset" value={name} onClick={HendleClick}>
             «Reset»
           </button>
         </li>
